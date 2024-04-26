@@ -1,11 +1,11 @@
 const Repo = require('./repo');
-const code = 'test';
 
 const generator = (db, interval) => {
     const repo = Repo.createRepo(db)
 
     function startGenerator() {
         setInterval(() => {
+            const code = require('./codeGenerator').newCode(10);
             db.transaction(() => {
                 console.log(`start generation, insert code "${code}"`);
                 const {count} = repo.getCountWithStateRequest.get(1);
