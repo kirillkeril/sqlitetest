@@ -1,17 +1,25 @@
 const Repo = require('./repo');
 
-const stateSetter = (db, interval, currentState, newState) => {
+const createStateSetter = (db, interval, currentState, newState) => {
     const repo = Repo.createRepo(db);
 
     function startStateSetter() {
         setInterval(() => {
             db.transaction(() => {
-                console.log(`update state from ${currentState} to ${newState}`);
                 const code = repo.getNextCodeWithStateRequest.get(1);
-                console.log(code);
-            });
+                if (!code) {
+                    return;
+                }
+                console.log(`update state from ${currentState} to ${newState} for ${code.idx} (${code.ts})`);
+                repo.updateStateByIdxCommand.run(2, code.idx);
+                console.log(`state updated for ${code.idx}`);
+            })();
         }, interval);
+    }
+
+    return {
+        startStateSetter,
     }
 }
 
-exports.default = stateSetter;
+exports.createSetter = createStateSetter;
