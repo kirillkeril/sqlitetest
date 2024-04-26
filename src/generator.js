@@ -1,8 +1,7 @@
-const db = require('better-sqlite3')('../gen.db')
 const Repo = require('./repo');
 const code = 'test';
 
-const generator = (interval) => {
+const generator = (db, interval) => {
     const repo = Repo.createRepo(db)
 
     function startGenerator() {
@@ -26,4 +25,4 @@ const generator = (interval) => {
     }
 }
 
-exports.generator = generator;
+exports.createGenerator = generator;
