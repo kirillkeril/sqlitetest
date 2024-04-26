@@ -1,2 +1,4 @@
-const gen = require("./generator.js");
-gen.generator();
+const gen = require("./src/generator.js");
+const {startGenerator} = gen.generator(1000)
+
+startGenerator();
