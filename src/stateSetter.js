@@ -6,12 +6,12 @@ const createStateSetter = (db, interval, currentState, newState) => {
     function startStateSetter() {
         setInterval(() => {
             db.transaction(() => {
-                const code = repo.getNextCodeWithStateRequest.get(1);
+                const code = repo.getNextCodeWithStateRequest.get(currentState);
                 if (!code) {
                     return;
                 }
                 console.log(`update state from ${currentState} to ${newState} for ${code.idx} (${code.ts})`);
-                repo.updateStateByIdxCommand.run(2, code.idx);
+                repo.updateStateByIdxCommand.run(newState, code.idx);
                 console.log(`state updated for ${code.idx}`);
             })();
         }, interval);
