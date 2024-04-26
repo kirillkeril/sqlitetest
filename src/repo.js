@@ -17,14 +17,24 @@ const repo = (db) => {
     `);
 
     const getCountWithStateRequest = db.prepare(`
-        SELECT COUNT(*) as count FROM gen WHERE state = ? ORDER BY ts 
+        SELECT COUNT(*) as count FROM gen WHERE state = ? ORDER BY ts
     `);
 
     const getCodeById = db.prepare(`
         SELECT * FROM gen WHERE idx = ?
     `);
 
+    const getNextCodeWithStateRequest = db.prepare(`
+        SELECT * FROM gen WHERE state = ? ORDER BY ts LIMIT 1
+    `)
+
+    const updateStateByIdxCommand = db.prepare(`
+        UPDATE gen SET state = ? WHERE idx = ?
+    `)
+
     return {
+        getNextCodeWithStateRequest,
+        updateStateByIdxCommand,
         getCountWithStateRequest,
         generateNewCodeCommand,
         getCodeById,
